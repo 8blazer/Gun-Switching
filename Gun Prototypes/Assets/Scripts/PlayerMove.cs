@@ -37,14 +37,14 @@ public class PlayerMove : MonoBehaviour
             Quaternion transfer = GetComponent<Transform>().rotation;
             transfer.y = 0;
             GetComponent<Transform>().rotation = transfer;
-
+            PlayerPrefs.SetString("Facing", "Right");
         }
         if (velocity.x < 0)
         {
             Quaternion transfer = GetComponent<Transform>().rotation;
             transfer.y = -180;
             GetComponent<Transform>().rotation = transfer;
-
+            PlayerPrefs.SetString("Facing", "Left");
         }
         if (Input.GetKeyDown("escape"))
         {
