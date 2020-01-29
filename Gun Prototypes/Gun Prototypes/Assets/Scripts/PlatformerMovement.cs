@@ -7,8 +7,6 @@ public class PlatformerMovement : MonoBehaviour
     public float moveSpeed = 1.0f;
     public float jumpSpeed = 1.0f;
     bool grounded = false;
-    float timer = 0;
-    bool timerGoing = false;
     void Update()
     {
         float moveX = Input.GetAxisRaw("Horizontal");
