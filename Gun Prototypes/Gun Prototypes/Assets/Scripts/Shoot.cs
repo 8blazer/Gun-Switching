@@ -29,10 +29,10 @@ public class Shoot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButton("Fire1") && holdWeapons.Contains(PlayerPrefs.GetString("Weapon")))
+        if (Input.GetButton("Fire1") && holdWeapons.Contains(PlayerPrefs.GetString("Weapon")) && timerGoing == false)
         {
             ShootWeapon();
-            timerGoing = false;
+            timerGoing = true;
         }
         else if (Input.GetButtonDown("Fire1") && timerGoing == false)
         {
@@ -114,64 +114,66 @@ public class Shoot : MonoBehaviour
                     bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(25, 0);
                 }
                 break;
-            case ("MachineGun"):
-                reload = 0;
-                i = rnd.Next(-30, 31);
+            case ("MachineGun"):         //Hold down and it gets less accurate
+                reload = .1f;
+                i = rnd.Next(-15, 16);
                 bulletLife = 1;
                 if (PlayerPrefs.GetString("Facing") == "Left")
                 {
                     GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity + new Vector2(2f, 0);
                     GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(-1.2f, .15f, 0), Quaternion.identity);
-                    bullet.transform.localRotation = Quaternion.Euler(0, 0, i);
-                    bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(-25, 0);
+                    bullet.transform.Rotate(0, 0, i);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * -15;
                 }
                 else
                 {
                     GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity - new Vector2(2f, 0);
                     GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(1.2f, .15f, 0), Quaternion.identity);
                     bullet.transform.Rotate(0, 0, i);
-                    bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(25, 0);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * 15;
                 }
                 break;
             case ("GoldMachineGun"):
-                reload = 0;
-                i = rnd.Next(-30, 31);
+                reload = .1f;
+                i = rnd.Next(-5, 6);
                 bulletLife = 1;
                 if (PlayerPrefs.GetString("Facing") == "Left")
                 {
                     GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(-1.2f, .15f, 0), Quaternion.identity);
-                    bullet.transform.rotation = Quaternion.Euler(0, 0, i);
-                    bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(-25, 0);
+                    bullet.GetComponent<Transform>().Rotate(0, 0, i);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * -15;
                 }
                 else
                 {
                     GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(1.2f, .15f, 0), Quaternion.identity);
                     bullet.GetComponent<Transform>().Rotate(0, 0, i);
-                    bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(25, 0);
+                    bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * 15;
                 }
                 break;
             case ("Shotgun"):
                 reload = 1;
-                i = rnd.Next(-30, 31);
+                i = rnd.Next(-45, 46);
                 bulletLife = .25f;
                 if (PlayerPrefs.GetString("Facing") == "Left")
                 {
-                    GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity + new Vector2(30f, 0);
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(2000, 0));
                     for (int i = 0; i < 10; i++)
                     {
                         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(-1.4f, .15f, 0), Quaternion.identity);
                         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(-15, 0);
                         bullet.GetComponent<Transform>().Rotate(0, 0, i);
+                        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * -15;
                     }
                 }
                 else
                 {
-                    GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity - new Vector2(30f, 0);
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(-2000, 0));
                     for (int i = 0; i < 10; i++)
                     {
                         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(1.4f, .15f, 0), Quaternion.identity);
                         bullet.GetComponent<Rigidbody2D>().velocity = new Vector2(15, 0);
-                        bullet.GetComponent<Transform>().Rotate(0, 0, bullet.transform.rotation.z + i);
+                        bullet.GetComponent<Transform>().Rotate(0, 0, i);
+                        bullet.GetComponent<Rigidbody2D>().velocity = bullet.transform.right * 15;
                     }
                 }
                 break;
@@ -181,7 +183,7 @@ public class Shoot : MonoBehaviour
                 bulletLife = .25f;
                 if (PlayerPrefs.GetString("Facing") == "Left")
                 {
-                    GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity + new Vector2(30f, 0);
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(2000, 0));
                     for (int i = 0; i < 10; i++)
                     {
                         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(-1.4f, .15f, 0), Quaternion.identity);
@@ -191,7 +193,7 @@ public class Shoot : MonoBehaviour
                 }
                 else
                 {
-                    GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity - new Vector2(30f, 0);
+                    GetComponent<Rigidbody2D>().AddForce(new Vector2(-2000, 0));
                     for (int i = 0; i < 10; i++)
                     {
                         GameObject bullet = Instantiate(bulletPrefab, transform.position + new Vector3(1.4f, .15f, 0), Quaternion.identity);
